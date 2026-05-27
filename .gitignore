@@ -1,0 +1,9 @@
+target/
+test-output/
+reports/
+.settings/
+.classpath
+.project
+*.log
+hs_err_pid*
+replay_pid*

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite thread-count="4" parallel="classes" name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
+  <listeners>
+    <listener class-name="utils.TestListeners"/>
+  </listeners>
+  <test thread-count="4" parallel="classes" name="Test(failed)">
+    <classes>
+      <class name="test.CheckoutTest">
+        <methods>
+          <include name="loginPage"/>
+          <include name="closeBrowser"/>
+          <include name="browserLaunch"/>
+          <include name="checkoutModule"/>
+        </methods>
+      </class> <!-- test.CheckoutTest -->
+      <class name="test.ProductsTest">
+        <methods>
+          <include name="removeButton"/>
+          <include name="cartItems"/>
+          <include name="closeBrowser"/>
+          <include name="browserLaunch"/>
+          <include name="productTitle"/>
+          <include name="productPrice"/>
+          <include name="verifyPdtFtrngDescending"/>
+          <include name="verifyPdtFtrngHl"/>
+          <include name="LoginPage"/>
+          <include name="productPage"/>
+          <include name="cartIconDisplay"/>
+          <include name="verifyPdtFtrngLh"/>
+          <include name="cartIcon"/>
+          <include name="productName"/>
+          <include name="verifyPdtFtrngAssending"/>
+        </methods>
+      </class> <!-- test.ProductsTest -->
+      <class name="test.CartTest">
+        <methods>
+          <include name="LoginPage"/>
+          <include name="continueShopBtn"/>
+          <include name="closeBrowser"/>
+          <include name="browserLaunch"/>
+          <include name="removeButton"/>
+          <include name="checkOutBtn"/>
+        </methods>
+      </class> <!-- test.CartTest -->
+    </classes>
+  </test> <!-- Test(failed) -->
+</suite> <!-- Failed suite [Suite] -->
