@@ -49,7 +49,7 @@ public class CheckoutPageClass extends BasePage{
 	@FindBy(xpath="//h3[text()='Error: Last Name is required']")
 	WebElement errLname;
 	
-//	//	error msg for postal code
+	//	error msg for postal code
 	@FindBy(xpath="//h3[text()='Error: Postal Code is required']")
 	WebElement errPcode;
 	

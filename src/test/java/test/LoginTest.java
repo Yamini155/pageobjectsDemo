@@ -13,7 +13,8 @@ public class LoginTest extends BaseTest {
 	
 	@Test(dataProvider="userInput",dataProviderClass=DataProviders.class)
   public void loginValidation(String username,String password,String result){
-	  LoginPageClass lp = new LoginPageClass(driver);
+		LoginPageClass lp = new LoginPageClass(driver);
+	  
 //	  lp.loginPage(ConfigReader.getProperty("username"),ConfigReader.getProperty("password"));
 	  lp.loginPage(username,password);
 	  if(result.equals("inValid")) {
@@ -25,14 +26,11 @@ public class LoginTest extends BaseTest {
 	  }
 	  }
  
- @Test
- public void assertValidLgn() {
+ @Test(dataProvider = "titleName", dataProviderClass = DataProviders.class)
+ public void assertValidLgn(String productList, String titleName) {
 	 ProductPageClass pp = new ProductPageClass(driver);
 //		Assertion for valid login  
-		  String expectedTitle = "Swag Labs";
-		  String actualTitle= pp.pageTitle();
-		  System.out.println("actualTitle is :" + actualTitle);
-		  Assert.assertEquals(expectedTitle,actualTitle);
+		  Assert.assertEquals(pp.pageTitle(),titleName);
 	 
  }
  

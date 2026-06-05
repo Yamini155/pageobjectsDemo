@@ -29,9 +29,6 @@ public class ProductPageClass extends BasePage {
 	@FindBy(xpath="//span[@data-test='title']")
 	WebElement productTitle;
 	
-//	list of products
-	@FindBy(className = "inventory_item_name")
-	List<WebElement> allProducts;
 	
 //	list of prices
 	@FindBy(className = "inventory_item_price")
@@ -40,6 +37,10 @@ public class ProductPageClass extends BasePage {
 // selection of product
 	@FindBy(xpath="//div[text()='Sauce Labs Backpack']")
 	WebElement productBackPack;
+	
+//	list of products
+	@FindBy(className = "inventory_item_name")
+	List<WebElement> allProducts;
 	
 //	multiple add to carts
 	@FindBy(xpath="//button[text()='Add to cart']")
@@ -139,7 +140,7 @@ public class ProductPageClass extends BasePage {
 	    return productBackPack.getText();
 	}
 	
-//	for adding selected products
+//	for adding selected products by using count
 	public void addProducts(int count) {
 
 	    int size = addCartbtnButtons.size();
@@ -149,34 +150,49 @@ public class ProductPageClass extends BasePage {
 	        addCartbtnButtons.get(0).click();
 	    }
 	}
-//	for adding total products
-	public void clickAddToCartBtn(int number) {
-
-	    for(WebElement button : addCartbtnButtons) {
-
-	        button.click();
-	    }
+	
+//	adding products based on product name
+	public void addinProducts(String productName) {
+		for( int i=0;i<allProducts.size();i++) {
+			String currentProduct=allProducts.get(i).getText();
+			if(currentProduct.equalsIgnoreCase(productName)) {
+				addCartbtnButtons.get(i).click();
+				
+			}
+			
+		}
+		
 	}
+
 	
 	
 	
-	public void clickAddToCart() {
+	public boolean clickAddToCart() {
 
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
-	    wait.until(ExpectedConditions .elementToBeClickable(addCartbtnBP));
+	    wait.until(ExpectedConditions.elementToBeClickable(addCartbtnBP));
 
 	    addCartbtnBP.click();
+
+	    return removeButtonBP.isDisplayed();
 	}
 	
-	public void clickRemoveButton() {
+	
+	
+	public boolean clickRemoveButton() {
 
-	  WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
-	   WebElement removeButton = wait.until(ExpectedConditions.elementToBeClickable(removeButtonBP));
+	    WebElement removeButton =
+	            wait.until(ExpectedConditions.elementToBeClickable(removeButtonBP));
 
 	    removeButton.click();
+
+	    return addCartbtnBP.isDisplayed();
 	}
+	
+	
 	
 	public void selectFilterOptions(String option) {
 		Select select =new Select(filterIcon);

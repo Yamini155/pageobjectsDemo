@@ -1,88 +1,60 @@
 package test;
 
+
 import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import base.BaseTest;
-import pages.CartPageClass;
 import pages.LoginPageClass;
 import pages.ProductPageClass;
 import utils.ConfigReader;
+import utils.DataProviders;
 
 public class ProductsTest extends BaseTest {
+	ProductPageClass pp;
 	
 	 @BeforeMethod
 	  public void LoginPage() {
 		  LoginPageClass lp = new LoginPageClass(driver);
 		  lp.loginPage(ConfigReader.getProperty("username"),ConfigReader.getProperty("password"));
+		  pp = new ProductPageClass(driver);
 		  
 	 }
-	   @Test 
-	   public void productPage() {
-		   
-		  ProductPageClass pp = new ProductPageClass(driver);
-		  pp.allProducts();
-	   }
-	   
-	   @Test 
-	   public void productPrice() {
-		   
-		  ProductPageClass pp = new ProductPageClass(driver);
-		  pp.allPrices();
-	   }
-	   @ Test 
-	   public void productTitle() {
-		  ProductPageClass pp = new ProductPageClass(driver);
-		  pp.titleOfProducts();
-//		  Assertion for label visibility
-		  String expectedLabel = "Products";
-		  String actualLabel= pp.titleOfProducts();;
-		  System.out.println("actualLabel is :" + actualLabel);
-		  Assert.assertEquals(expectedLabel,actualLabel);
-	   }
-	   
-	   @Test 
-	   public void productName() {
-		  ProductPageClass pp = new ProductPageClass(driver);
-		  pp.singlePdtName();
-//		  Assertion for product visibility
-		  String expectedProduct = "Sauce Labs Backpack";
-		  String actualProduct= pp.singlePdtName();;
-		  System.out.println("actualProduct is :" + actualProduct);
-		  Assert.assertEquals(expectedProduct,actualProduct);
-	   }
-	   
-	   
+	  
+	 @Test(dataProvider = "labelName", dataProviderClass = DataProviders.class)
+	 public void validatePageLabel(String ProductList,String labelName) {
+	  Assert.assertEquals(pp.titleOfProducts(), labelName);
+	 }
+	 @Test(dataProvider = "productName", dataProviderClass = DataProviders.class)
+	 public void validateProductName(String ProductList,String productName) {
+		 Assert.assertEquals(pp.singlePdtName(), productName);
+
+		 }
+	       
 	   @Test 
 	   public void removeButton() {
-		  ProductPageClass pp = new ProductPageClass(driver);
-		  pp.clickAddToCart();
-		  pp.clickRemoveButton();
+		  Assert.assertTrue(pp.clickAddToCart());
+		  Assert.assertTrue(pp.clickRemoveButton());
 	   }
 	   
 	
 	   @Test
 	   public void cartIconDisplay() {
-		  ProductPageClass pp = new ProductPageClass(driver);
 		  pp.isCartIconDisplayed();
 		  
 	   }
 	   
 	   @Test
 		 public void cartItems() {
-
- ProductPageClass pp = new ProductPageClass(driver);
-
 		     pp.addProducts(1);
-		   int actualCount = pp.cartCount();
-		   int expectedCount = 1;
-		 Assert.assertEquals(actualCount, expectedCount);
+		 Assert.assertEquals(pp.cartCount(), 1);
+		 
 		 }
 	   
          @Test
 		 public void cartIcon() {
-		 ProductPageClass pp = new ProductPageClass(driver);
 			 pp.clickAddToCart();
 			 pp.clickCartIcon();
 		 }
@@ -90,46 +62,39 @@ public class ProductsTest extends BaseTest {
 		 
 //		  validation for filter
 		  
-		  @Test
-		  public void verifyPdtFtrngAssending() {
-			  ProductPageClass pp = new ProductPageClass(driver);
+		  @Test(dataProvider="filterDec",dataProviderClass=DataProviders.class)
+		  public void pdtDesending(String ProductList,String productDecending) {
 			 pp.selectFilterOptions("Name (Z to A)");
-			 
 			 List <String> productList = pp.allProducts();
-			 Assert.assertEquals(productList.getFirst(),"Test.allTheThings() T-Shirt (Red)");
+			 Assert.assertEquals(productList.getFirst(),productDecending);
 			    
 		  }
-		  
-		  @Test 
-		  public void verifyPdtFtrngDescending() {
-			  ProductPageClass pp = new ProductPageClass(driver);
+  
+		  @Test (dataProvider="filterAsc",dataProviderClass=DataProviders.class)
+		  public void PdtAscending(String ProductList,String prdouctAscending) {
 			 pp.selectFilterOptions("Name (A to Z)");
-			 
 			 List <String> productList = pp.allProducts();
-			 Assert.assertEquals(productList.get(0),"Sauce Labs Backpack");
+			 Assert.assertEquals(productList.get(0),prdouctAscending);
 			    
 		  }
-		  
-		  @Test
-		  public void verifyPdtFtrngHl() {
-			  ProductPageClass pp = new ProductPageClass(driver);
+
+		  @Test (dataProvider="filterLtoH",dataProviderClass=DataProviders.class)
+		  public void PdtHightoLow(String ProductList,String lowToHighPrice) {
 			 pp.selectFilterOptions("Price (low to high)");
-			 
 			 List<Double> priceList = pp.allPrices();
-			 Assert.assertEquals(priceList.getFirst(),Double.valueOf(7.99) );
+			 Double expectedLow = Double.parseDouble(lowToHighPrice);
+		     Assert.assertEquals(priceList.getFirst(), expectedLow);
 			    
 		  }
-		  
-		  @Test
-		  public void verifyPdtFtrngLh() {
-			  ProductPageClass pp = new ProductPageClass(driver);
+	  
+		  @Test (dataProvider="filterHtoL",dataProviderClass=DataProviders.class)
+		  public void pdtLowtoHigh(String ProductList,String highToLowPrice ) {
 			 pp.selectFilterOptions("Price (high to low)");
-			 
 			 List<Double> priceList = pp.allPrices();
-			 Assert.assertEquals(priceList.getFirst(),Double.valueOf(49.99));
+			 Double expectedHigh = Double.parseDouble(highToLowPrice);
+		     Assert.assertEquals(priceList.getFirst(), expectedHigh);
 			    
 		  }
-	   
 	 
 	 
 	 
